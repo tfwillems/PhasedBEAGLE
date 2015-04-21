@@ -49,7 +49,7 @@ public class SingleBaumLevel {
     private double fwdValueSum = 0.0;
     private double bwdValueSum = 0.0;
 
-    private int nGenotypes = 0;
+    private int nPhasedGenotypes = 0;
     private double[] gtProbs = new double[3];
 
     /**
@@ -103,7 +103,7 @@ public class SingleBaumLevel {
     public void setForwardValues(SingleNodes nodes, int marker, int sample) {
         this.marker = marker;
         this.sample = sample;
-        this.nGenotypes = gl.marker(marker).nGenotypes();
+        this.nPhasedGenotypes = gl.marker(marker).nPhasedGenotypes();
         this.size = 0;
         this.fwdValueSum = 0.0;
         this.bwdValueSum = 0.0;
@@ -113,12 +113,12 @@ public class SingleBaumLevel {
     }
 
     private void initializeGtProbs() {
-        if (gtProbs.length < nGenotypes) {
-            int newLength = Math.max(nGenotypes, (3*gtProbs.length/2 + 1));
+        if (gtProbs.length < nPhasedGenotypes) {
+            int newLength = Math.max(nPhasedGenotypes, (3*gtProbs.length/2 + 1));
             gtProbs = new double[newLength];
         }
         else {
-            for (int j=0; j<nGenotypes; ++j) {
+            for (int j=0; j<nPhasedGenotypes; ++j) {
                 gtProbs[j] = 0.0;
             }
         }
@@ -243,7 +243,7 @@ public class SingleBaumLevel {
             }
             nodes.sumUpdate(node1, node2, bwdValue);
         }
-        for (int j=0; j<nGenotypes; ++j) {
+        for (int j=0; j<nPhasedGenotypes; ++j) {
             gtProbs[j] /= gtProbsSum;
         }
     }
@@ -275,11 +275,11 @@ public class SingleBaumLevel {
     }
 
     /**
-     * Return the number of possible genotypes at this level of the HMM.
-     * @return the number of possible genotypes at this level of the HMM.
+     * Return the number of possible phased genotypes at this level of the HMM.
+     * @return the number of possible phased genotypes at this level of the HMM.
      */
-    public int nGenotypes() {
-        return nGenotypes;
+    public int nPhasedGenotypes() {
+        return nPhasedGenotypes;
     }
 
     /**
@@ -291,7 +291,7 @@ public class SingleBaumLevel {
      * {@code gt<0 || gt>=this.nGenotypes()}
      */
     public double gtProbs(int gt) {
-        if (gt >= nGenotypes) {
+        if (gt >= nPhasedGenotypes) {
             throw new IllegalArgumentException(String.valueOf(gt));
         }
         return gtProbs[gt];
