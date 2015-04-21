@@ -1,0 +1,13 @@
+*~
+PhasedBEAGLE.jar
+beagleutil/*.class
+blbutil/*.class
+dag/*.class
+haplotype/*.class
+ibd/*.class
+main/*.class
+net/*.class
+sample/*.class
+vcf/*.class
+net/sf/samtools/*.class
+net/sf/samtools/util/*.class
