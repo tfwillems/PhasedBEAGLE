@@ -46,7 +46,7 @@ public class Marker implements Comparable<Marker> {
     private final String[] ids;
     private final String id;
     private final String[] alleles;
-    private final int nGenotypes;
+    private final int nUnphasedGenotypes, nPhasedGenotypes;
     private final int end;
 
     /**
@@ -83,7 +83,8 @@ public class Marker implements Comparable<Marker> {
         this.id = markerIds.length>0 ? markerIds[0] :
                 (fields[0] + Const.colon + pos);
         this.alleles = alleles(fields[3], altAlleles);
-        this.nGenotypes = alleles.length*(alleles.length+1)/2;
+        this.nUnphasedGenotypes = alleles.length*(alleles.length+1)/2;
+        this.nPhasedGenotypes   = alleles.length*alleles.length;
         this.end = extractEnd(fields[7]);
     }
 
@@ -112,7 +113,9 @@ public class Marker implements Comparable<Marker> {
                 this.alleles[j] = flipAllele(m.alleles[j]);
             }
         }
-        this.nGenotypes = m.nGenotypes;
+	
+        this.nPhasedGenotypes   = m.nPhasedGenotypes;
+        this.nUnphasedGenotypes = m.nUnphasedGenotypes;
         this.end = m.end;
     }
 
@@ -372,14 +375,25 @@ public class Marker implements Comparable<Marker> {
     }
 
     /**
-     * Returns the number of distinct genotypes:
+     * Returns the number of distinct phased genotypes:
+     * {@code this.nAlleles()*this.nAlleles()}.
+     *
+     * @return the number of distinct phased genotypes:
+     * {@code this.nAlleles()*this.nAlleles()}.
+     */
+    public int nPhasedGenotypes() {
+        return nPhasedGenotypes;
+    }
+
+    /**
+     * Returns the number of distinct unphased genotypes:
      * {@code this.nAlleles()*(1 + this.nAlleles())/2}.
      *
-     * @return the number of distinct genotypes:
+     * @return the number of distinct unphased genotypes:
      * {@code this.nAlleles()*(1 + this.nAlleles())/2}.
      */
-    public int nGenotypes() {
-        return nGenotypes;
+    public int nUnphasedGenotypes() {
+        return nUnphasedGenotypes;
     }
 
     /**

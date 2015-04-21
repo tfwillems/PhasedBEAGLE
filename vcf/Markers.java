@@ -38,13 +38,15 @@ public final class Markers {
 
     private final Marker[] fwdMarkers;
     private final int[] fwdSumAlleles;
-    private final int[] fwdSumGenotypes;
+    private final int[] fwdSumUnphasedGenotypes;
+    private final int[] fwdSumPhasedGenotypes;
     private final int[] fwdSumHaplotypeBits;
     private final int fwdHashCode;
 
     private final Marker[] bwdMarkers;
     private final int[] bwdSumAlleles;
-    private final int[] bwdSumGenotypes;
+    private final int[] bwdSumUnphasedGenotypes;
+    private final int[] bwdSumPhasedGenotypes;
     private final int[] bwdSumHaplotypeBits;
     private final int bwdHashCode;
 
@@ -70,12 +72,14 @@ public final class Markers {
         this.markerSet = markerSet(fwdMarkers);
 
         this.fwdSumAlleles = cumSumAlleles(fwdMarkers);
-        this.fwdSumGenotypes = cumSumGenotypes(fwdMarkers);
+        this.fwdSumUnphasedGenotypes = cumSumUnphasedGenotypes(fwdMarkers);
+	this.fwdSumPhasedGenotypes = cumSumPhasedGenotypes(fwdMarkers);
         this.fwdSumHaplotypeBits = cumSumHaplotypeBits(fwdMarkers);
         this.fwdHashCode = Arrays.deepHashCode(fwdMarkers);
 
         this.bwdSumAlleles = cumSumAlleles(bwdMarkers);
-        this.bwdSumGenotypes = cumSumGenotypes(bwdMarkers);
+        this.bwdSumUnphasedGenotypes = cumSumUnphasedGenotypes(bwdMarkers);
+        this.bwdSumPhasedGenotypes = cumSumPhasedGenotypes(bwdMarkers);
         this.bwdSumHaplotypeBits = cumSumHaplotypeBits(bwdMarkers);
         this.bwdHashCode = Arrays.deepHashCode(bwdMarkers);
     }
@@ -91,12 +95,14 @@ public final class Markers {
         this.bwdMarkers = markers.fwdMarkers;
 
         this.fwdSumAlleles = markers.bwdSumAlleles;
-        this.fwdSumGenotypes = markers.bwdSumGenotypes;
+        this.fwdSumUnphasedGenotypes = markers.bwdSumUnphasedGenotypes;
+        this.fwdSumPhasedGenotypes = markers.bwdSumPhasedGenotypes;
         this.fwdSumHaplotypeBits = markers.bwdSumHaplotypeBits;
         this.fwdHashCode = markers.bwdHashCode;
 
         this.bwdSumAlleles = markers.fwdSumAlleles;
-        this.bwdSumGenotypes = markers.fwdSumGenotypes;
+        this.bwdSumUnphasedGenotypes = markers.fwdSumUnphasedGenotypes;
+	this.bwdSumPhasedGenotypes = markers.fwdSumPhasedGenotypes;
         this.bwdSumHaplotypeBits = markers.fwdSumHaplotypeBits;
         this.bwdHashCode = markers.fwdHashCode;
     }
@@ -162,10 +168,18 @@ public final class Markers {
         return ia;
     }
 
-    private static int[] cumSumGenotypes(Marker[] markers) {
+    private static int[] cumSumUnphasedGenotypes(Marker[] markers) {
         int[] ia = new int[markers.length + 1];
         for (int j=1; j<ia.length; ++j) {
-            ia[j] = ia[j-1] + markers[j-1].nGenotypes();
+            ia[j] = ia[j-1] + markers[j-1].nUnphasedGenotypes();
+        }
+        return ia;
+    }
+
+    private static int[] cumSumPhasedGenotypes(Marker[] markers) {
+	int[] ia = new int[markers.length + 1];
+        for (int j=1; j<ia.length; ++j) {
+            ia[j] = ia[j-1] + markers[j-1].nPhasedGenotypes();
         }
         return ia;
     }
@@ -311,24 +325,44 @@ public final class Markers {
     }
 
     /**
-     * Returns the sum of the number of possible genotypes for the markers
+     * Returns the sum of the number of possible unphased genotypes for the markers
      * with index less than the specified index.
      * @param marker a marker index.
-     * @return the sum of the number of possible genotypes for the markers
+     * @return the sum of the number of possible unphased genotypes for the markers
      * with index less than the specified index.
      * @throws IndexOutOfBoundsException if
      * {@code marker<0 || marker>this.nMarkers()}
      */
-    public int sumGenotypes(int marker) {
-        return fwdSumGenotypes[marker];
+    public int sumUnphasedGenotypes(int marker) {
+        return fwdSumUnphasedGenotypes[marker];
     }
 
     /**
-     * Returns {@code this.sumGenotypes(this.nMarkers())}.
-     * @return {@code this.sumGenotypes(this.nMarkers())}.
+     * Returns {@code this.sumUnphasedGenotypes(this.nMarkers())}.
+     * @return {@code this.sumUnphasedGenotypes(this.nMarkers())}.
      */
-    public int sumGenotypes() {
-        return fwdSumGenotypes[fwdMarkers.length];
+    public int sumUnphasedGenotypes() {
+        return fwdSumUnphasedGenotypes[fwdMarkers.length];
+    }
+    /**
+     * Returns the sum of the number of possible phased genotypes for the markers
+     * with index less than the specified index.
+     * @param marker a marker index.
+     * @return the sum of the number of possible phased genotypes for the markers
+     * with index less than the specified index.
+     * @throws IndexOutOfBoundsException if
+     * {@code marker<0 || marker>this.nMarkers()}
+     */
+    public int sumPhasedGenotypes(int marker) {
+        return fwdSumPhasedGenotypes[marker];
+    }
+
+    /**
+     * Returns {@code this.sumPhasedGenotypes(this.nMarkers())}.
+     * @return {@code this.sumPhasedGenotypes(this.nMarkers())}.
+     */
+    public int sumPhasedGenotypes() {
+        return fwdSumPhasedGenotypes[fwdMarkers.length];
     }
 
     /**
