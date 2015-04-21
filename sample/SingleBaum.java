@@ -146,17 +146,17 @@ public class SingleBaum implements SingleBaumInterface {
     }
 
     private void checkGtProbs(double[] gtProbs) {
-        if (gtProbs.length != gl.markers().sumGenotypes()) {
-            String s = "gtProbs.length!=gl.markers().sumGenotypes()";
+        if (gtProbs.length != gl.markers().sumPhasedGenotypes()) {
+            String s = "gtProbs.length!=gl.markers().sumPhasedGenotypes()";
             throw new IllegalArgumentException(s);
         }
     }
 
     private void setGtProbs(SingleBaumLevel level, double[] gtProbs) {
         int m = level.marker();
-        int nGenotypes = gl.marker(m).nGenotypes();
-        int base = gl.markers().sumGenotypes(m);
-        for (int j=0; j<nGenotypes; ++j) {
+        int nPhasedGenotypes = gl.marker(m).nPhasedGenotypes();
+        int base = gl.markers().sumPhasedGenotypes(m);
+        for (int j=0; j<nPhasedGenotypes; ++j) {
             gtProbs[base + j] = level.gtProbs(j);
         }
     }

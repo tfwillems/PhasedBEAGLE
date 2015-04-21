@@ -68,7 +68,7 @@ public final class FixedGenotypeValues implements GenotypeValues {
     public void add(int sample, double[] values) {
         int index = 0;
         for (int j=0, n=gv.nMarkers(); j<n; ++j) {
-            int nGt = gv.marker(j).nGenotypes();
+            int nGt = gv.marker(j).nPhasedGenotypes();
             for (int gt=0; gt<nGt; ++gt) {
                 this.add(j, sample, gt, values[index++]);
             }

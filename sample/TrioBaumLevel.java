@@ -53,7 +53,7 @@ public class TrioBaumLevel {
     private double fwdValueSum = 0.0;
     private double bwdValueSum = 0.0;
 
-    private int nGenotypes = 0;
+    private int nPhasedGenotypes = 0;
     private double[] gtProbsA = new double[3];
     private double[] gtProbsB = new double[3];
     private double[] gtProbsC = new double[3];
@@ -119,7 +119,7 @@ public class TrioBaumLevel {
         this.sampleA = sampleA;
         this.sampleB = sampleB;
         this.sampleC = sampleC;
-        this.nGenotypes = gl.marker(marker).nGenotypes();
+        this.nPhasedGenotypes = gl.marker(marker).nPhasedGenotypes();
         this.size = 0;
         this.fwdValueSum = 0.0;
         this.bwdValueSum = 0.0;
@@ -129,14 +129,14 @@ public class TrioBaumLevel {
     }
 
     private void initializeGtProbs() {
-        if (gtProbsA.length < nGenotypes) {
-            int newLength = Math.max(nGenotypes, (3*gtProbsA.length/2 + 1));
+        if (gtProbsA.length < nPhasedGenotypes) {
+            int newLength = Math.max(nPhasedGenotypes, (3*gtProbsA.length/2 + 1));
             gtProbsA = new double[newLength];
             gtProbsB = new double[newLength];
             gtProbsC = new double[newLength];
         }
         else {
-            for (int j=0; j<nGenotypes; ++j) {
+            for (int j=0; j<nPhasedGenotypes; ++j) {
                 gtProbsA[j] = 0.0;
                 gtProbsB[j] = 0.0;
                 gtProbsC[j] = 0.0;
@@ -303,7 +303,7 @@ public class TrioBaumLevel {
             }
             nodes.sumUpdate(nodeA1, nodeA2, nodeB1, nodeB2, bwdValue);
         }
-        for (int j=0; j<nGenotypes; ++j) {
+        for (int j=0; j<nPhasedGenotypes; ++j) {
             gtProbsA[j] /= gtProbsSum;
             gtProbsB[j] /= gtProbsSum;
             gtProbsC[j] /= gtProbsSum;
@@ -337,11 +337,11 @@ public class TrioBaumLevel {
     }
 
     /**
-     * Return the number of possible genotypes at this level of the HMM.
-     * @return the number of possible genotypes at this level of the HMM.
+     * Return the number of possible phased genotypes at this level of the HMM.
+     * @return the number of possible phased genotypes at this level of the HMM.
      */
-    public int nGenotypes() {
-        return nGenotypes;
+    public int nPhasedGenotypes() {
+        return nPhasedGenotypes;
     }
 
     /**
@@ -384,7 +384,7 @@ public class TrioBaumLevel {
     }
 
     private void checkGT(int gt) {
-        if (gt >= nGenotypes) {
+        if (gt >= nPhasedGenotypes) {
             throw new IllegalArgumentException(String.valueOf(gt));
         }
     }

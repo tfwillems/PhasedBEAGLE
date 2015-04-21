@@ -117,7 +117,7 @@ public class ProduceSingleSamples implements Runnable {
         this.qIn = qIn;
         this.gv = gv;
         this.sampledHaps = hapList;
-        int n = baum.gl().markers().sumGenotypes();
+        int n = baum.gl().markers().sumPhasedGenotypes();
         this.gprobs = new double[n];
     }
 

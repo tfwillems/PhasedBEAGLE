@@ -205,8 +205,8 @@ public class HapBaum {
     }
 
     private void checkGprobs(double[] gtProbs) {
-        if (gtProbs.length != al.markers().sumGenotypes()) {
-            String s = "gtProbs.length!=al.markers().sumGenotypes()";
+        if (gtProbs.length != al.markers().sumPhasedGenotypes()) {
+            String s = "gtProbs.length!=al.markers().sumPhasedGenotypes()";
             throw new IllegalArgumentException(s);
         }
     }

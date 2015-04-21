@@ -85,7 +85,7 @@ public class ProduceHapSamples implements Runnable {
         this.qIn = qIn;
         this.gv = gv;
         this.sampledHaps = hapPairList;
-        this.gprobs = new double[gv.markers().sumGenotypes()];
+        this.gprobs = new double[gv.markers().sumPhasedGenotypes()];
     }
 
     /**

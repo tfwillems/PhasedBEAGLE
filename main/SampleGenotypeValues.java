@@ -50,7 +50,7 @@ public class SampleGenotypeValues {
         }
         this.sample = sample;
         this.markers = markers;
-        this.gtValues = new float[markers.sumGenotypes()];
+        this.gtValues = new float[markers.sumPhasedGenotypes()];
     }
 
     /**
@@ -74,8 +74,8 @@ public class SampleGenotypeValues {
     private SampleGenotypeValues(SampleGenotypeValues gv, int start, int end) {
         this.sample = gv.sample;
         this.markers = gv.markers.restrict(start, end);
-        int from = gv.markers.sumGenotypes(start);
-        int to = gv.markers.sumGenotypes(end);
+        int from = gv.markers.sumPhasedGenotypes(start);
+        int to = gv.markers.sumPhasedGenotypes(end);
         this.gtValues = Arrays.copyOfRange(gv.gtValues, from, to);
     }
 
@@ -89,11 +89,11 @@ public class SampleGenotypeValues {
      * @throws IndexOutOfBoundsException if
      * {@code marker<0 || marker>=this.nMarkers()}.
      * @throws IndexOutOfBoundsException if
-     * {@code genotype<0 || genotype>=this.marker(marker).nGenotypes()}.
+     * {@code genotype<0 || genotype>=this.marker(marker).nPhasedGenotypes()}.
      */
     public synchronized float value(int marker, int genotype) {
         checkGenotype(marker, genotype);
-        return gtValues[markers.sumGenotypes(marker) + genotype];
+        return gtValues[markers.sumPhasedGenotypes(marker) + genotype];
     }
 
     /**
@@ -101,8 +101,8 @@ public class SampleGenotypeValues {
      * equivalent to
      * <pre>
      * for (m=0; m&lt;this.nMarkers(); ++m) {
-     *     offset = this.markers().sumGenotypes(m);
-     *     for (gt=0; gt&lt;this.marker(m).nGenotypes(); ++gt) {
+     *     offset = this.markers().sumPhasedGenotypes(m);
+     *     for (gt=0; gt&lt;this.marker(m).nPhasedGenotypes(); ++gt) {
      *         this.add(marker, gt, values[offset + gt])
      *     }
      * }
@@ -133,16 +133,16 @@ public class SampleGenotypeValues {
      * @throws IndexOutOfBoundsException if
      * {@code marker<0 || marker>=this.nMarkers()}
      * @throws IndexOutOfBoundsException if
-     * {@code genotype<0 || genotype>=this.marker(marker).nGenotypes()}.
+     * {@code genotype<0 || genotype>=this.marker(marker).nPhasedGenotypes()}.
      */
     public synchronized void add(int marker, int genotype, double value) {
         checkGenotype(marker, genotype);
-        gtValues[markers.sumGenotypes(marker) + genotype] += value;
+        gtValues[markers.sumPhasedGenotypes(marker) + genotype] += value;
     }
 
     private void checkGenotype(int marker, int genotype) {
-        int nGenotypes = markers.marker(marker).nGenotypes();
-        if (genotype < 0 || genotype >= nGenotypes) {
+        int nPhasedGenotypes = markers.marker(marker).nPhasedGenotypes();
+        if (genotype < 0 || genotype >= nPhasedGenotypes) {
             throw new IndexOutOfBoundsException("genotype: " + genotype);
         }
     }

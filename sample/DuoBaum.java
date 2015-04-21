@@ -224,18 +224,18 @@ public class DuoBaum {
     }
 
     private void checkGprobs(double[] gtProbsA, double[] gtProbsB) {
-        int n = gl.markers().sumGenotypes();
+        int n = gl.markers().sumPhasedGenotypes();
         if (gtProbsA.length!=n || gtProbsB.length!=n) {
-            String s = "gtProbs.length!=gl.markers().sumGenotypes()";
+            String s = "gtProbs.length!=gl.markers().sumPhasedGenotypes()";
             throw new IllegalArgumentException(s);
         }
     }
 
     private void setGprobs(DuoBaumLevel level, double[] gtProbsA, double[] gtProbsB) {
         int m = level.marker();
-        int nGenotypes = gl.marker(m).nGenotypes();
-        int base = gl.markers().sumGenotypes(m);
-        for (int j=0; j<nGenotypes; ++j) {
+        int nPhasedGenotypes = gl.marker(m).nPhasedGenotypes();
+        int base = gl.markers().sumPhasedGenotypes(m);
+        for (int j=0; j<nPhasedGenotypes; ++j) {
             gtProbsA[base + j] = level.gtProbsA(j);
             gtProbsB[base + j] = level.gtProbsB(j);
         }

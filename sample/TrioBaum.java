@@ -218,11 +218,11 @@ public class TrioBaum {
      * {@code sampleC<0 || sampleC>=this.gl().nSamples()}
      *
      * @throws IllegalArgumentException if
-     * {@code gtProbsA.length!=this.gl().markers().sumGenotypes()}
+     * {@code gtProbsA.length!=this.gl().markers().sumPhasedGenotypes()}
      * @throws IllegalArgumentException
-     * {@code gtProbsB.length!=this.gl().markers().sumGenotypes()}
+     * {@code gtProbsB.length!=this.gl().markers().sumPhasedGenotypes()}
      * @throws IllegalArgumentException
-     * {@code gtProbsC.length!=this.gl().markers().sumGenotypes()}
+     * {@code gtProbsC.length!=this.gl().markers().sumPhasedGenotypes()}
      * @throws NullPointerException if
      * {@code gtProbsA==null || gtProbsB==null || gtProbsC==null}
      */
@@ -246,7 +246,7 @@ public class TrioBaum {
 
     private void checkGtProbs(double[] gtProbsA, double[] gtProbsB,
             double[] gtProbsC) {
-        int n = gl.markers().sumGenotypes();
+        int n = gl.markers().sumPhasedGenotypes();
         if (gtProbsA.length!=n || gtProbsB.length!=n || gtProbsC.length!=n) {
             String s = "array length error";
             throw new IllegalArgumentException(s);
@@ -256,9 +256,9 @@ public class TrioBaum {
     private void setGtProbs(TrioBaumLevel level, double[] gtProbsA,
             double[] gtProbsB, double[] gtProbsC) {
         int m = level.marker();
-        int nGenotypes = gl.marker(m).nGenotypes();
-        int base = gl.markers().sumGenotypes(m);
-        for (int j=0; j<nGenotypes; ++j) {
+        int nPhasedGenotypes = gl.marker(m).nPhasedGenotypes();
+        int base = gl.markers().sumPhasedGenotypes(m);
+        for (int j=0; j<nPhasedGenotypes; ++j) {
             gtProbsA[base + j] = level.gtProbsA(j);
             gtProbsB[base + j] = level.gtProbsB(j);
             gtProbsC[base + j] = level.gtProbsC(j);
