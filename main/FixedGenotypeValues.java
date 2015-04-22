@@ -60,8 +60,13 @@ public final class FixedGenotypeValues implements GenotypeValues {
     }
 
     @Override
-    public float value(int marker, int sample, int genotype) {
-        return gv.value(marker, sample, genotype);
+    public float unphased_value(int marker, int sample, int genotype) {
+        return gv.unphased_value(marker, sample, genotype);
+    }
+
+    @Override
+    public float phased_value(int marker, int sample, int genotype) {
+        return gv.phased_value(marker, sample, genotype);
     }
 
     @Override

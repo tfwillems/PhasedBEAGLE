@@ -18,6 +18,8 @@
  */
 package main;
 
+import blbutil.IntPair;
+import vcf.BasicGL;
 import vcf.Markers;
 import vcf.Marker;
 import java.util.Arrays;
@@ -83,7 +85,25 @@ public class SampleGenotypeValues {
      * Returns the specified genotype value.
      *
      * @param marker a marker index.
-     * @param genotype a genotype index.
+     * @param genotype a genotype index for an unphased genotype.
+     * @return the specified genotype value.
+     *
+     * @throws IndexOutOfBoundsException if
+     * {@code marker<0 || marker>=this.nMarkers()}.
+     * @throws IndexOutOfBoundsException if
+     * {@code genotype<0 || genotype>=this.marker(marker).nUnPhasedGenotypes()}.
+     */
+    public synchronized float unphased_value(int marker, int genotype) {
+        checkUnphasedGenotype(marker, genotype);
+	IntPair indices = markers.get_phased_indices(marker, genotype);
+        return gtValues[markers.sumPhasedGenotypes(marker) + indices.first()] + gtValues[markers.sumPhasedGenotypes(marker) + indices.second()];
+    }
+
+    /**
+     * Returns the specified genotype value.
+     *
+     * @param marker a marker index.
+     * @param genotype a genotype index for an unphased genotype.
      * @return the specified genotype value.
      *
      * @throws IndexOutOfBoundsException if
@@ -91,8 +111,8 @@ public class SampleGenotypeValues {
      * @throws IndexOutOfBoundsException if
      * {@code genotype<0 || genotype>=this.marker(marker).nPhasedGenotypes()}.
      */
-    public synchronized float value(int marker, int genotype) {
-        checkGenotype(marker, genotype);
+    public synchronized float phased_value(int marker, int genotype) {
+        checkPhasedGenotype(marker, genotype);
         return gtValues[markers.sumPhasedGenotypes(marker) + genotype];
     }
 
@@ -126,7 +146,7 @@ public class SampleGenotypeValues {
     /**
      * Adds the specified genotype value to {@code this}.
      * @param marker a marker index.
-     * @param genotype a genotype index.
+     * @param genotype a genotype index for a phased genotype.
      * @param value the value to be added.
      * @throws IndexOutOfBoundsException if
      *
@@ -136,11 +156,18 @@ public class SampleGenotypeValues {
      * {@code genotype<0 || genotype>=this.marker(marker).nPhasedGenotypes()}.
      */
     public synchronized void add(int marker, int genotype, double value) {
-        checkGenotype(marker, genotype);
+        checkPhasedGenotype(marker, genotype);
         gtValues[markers.sumPhasedGenotypes(marker) + genotype] += value;
     }
 
-    private void checkGenotype(int marker, int genotype) {
+    private void checkUnphasedGenotype(int marker, int genotype) {
+        int nUnphasedGenotypes = markers.marker(marker).nUnphasedGenotypes();
+        if (genotype < 0 || genotype >= nUnphasedGenotypes) {
+            throw new IndexOutOfBoundsException("genotype: " + genotype);
+        }
+    }
+
+    private void checkPhasedGenotype(int marker, int genotype) {
         int nPhasedGenotypes = markers.marker(marker).nPhasedGenotypes();
         if (genotype < 0 || genotype >= nPhasedGenotypes) {
             throw new IndexOutOfBoundsException("genotype: " + genotype);

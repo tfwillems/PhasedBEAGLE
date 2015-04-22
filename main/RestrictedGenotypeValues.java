@@ -70,18 +70,23 @@ public final class RestrictedGenotypeValues implements GenotypeValues {
     }
 
     @Override
-    public float value(int marker, int sample, int genotype) {
-        return gv.value(inclusionMap[marker], sample, genotype);
+    public float unphased_value(int marker, int sample, int genotype) {
+        return gv.unphased_value(inclusionMap[marker], sample, genotype);
+    }
+
+    @Override
+    public float phased_value(int marker, int sample, int genotype) {
+        return gv.phased_value(inclusionMap[marker], sample, genotype);
     }
 
     @Override
     public void add(int sample, double[] values) {
-        if (values.length != restriction.sumGenotypes()) {
+        if (values.length != restriction.sumPhasedGenotypes()) {
             throw new IllegalArgumentException("values.length=" + values.length);
         }
         int index = 0;
         for (int j=0; j<inclusionMap.length; ++j) {
-            int nGt = restriction.marker(j).nGenotypes();
+            int nGt = restriction.marker(j).nPhasedGenotypes();
             for (int gt=0; gt<nGt; ++gt) {
                 gv.add(inclusionMap[j], sample, gt, values[index++]);
             }

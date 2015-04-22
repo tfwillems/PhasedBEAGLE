@@ -48,20 +48,26 @@ public class RevGenotypeValues implements GenotypeValues {
     }
 
     @Override
-    public float value(int marker, int sample, int genotype) {
+    public float unphased_value(int marker, int sample, int genotype) {
         int revMarker = gvi.nMarkers() - 1 - marker;
-        return gvi.value(revMarker, sample, genotype);
+        return gvi.unphased_value(revMarker, sample, genotype);
+    }
+
+    @Override
+    public float phased_value(int marker, int sample, int genotype) {
+        int revMarker = gvi.nMarkers() - 1 - marker;
+        return gvi.phased_value(revMarker, sample, genotype);
     }
 
     @Override
     public void add(int sample, double[] values) {
-        if (values.length != gvi.markers().sumGenotypes()) {
+        if (values.length != gvi.markers().sumPhasedGenotypes()) {
             throw new IllegalArgumentException("values.length=" + values.length);
         }
         int index = 0;
         for (int m=0, n=gvi.nMarkers(); m<n; ++m) {
             int revMarker = gvi.nMarkers() - 1 - m;
-            int nGt = gvi.marker(revMarker).nGenotypes();
+            int nGt = gvi.marker(revMarker).nPhasedGenotypes();
             for (int gt=0; gt<nGt; ++gt) {
                 gvi.add(revMarker, sample, gt, values[index++]);
             }

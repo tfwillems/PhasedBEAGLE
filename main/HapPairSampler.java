@@ -443,7 +443,7 @@ public final class HapPairSampler {
             List<HapPair> sampledHaps, GenotypeValues gv) {
         if (fam.nDuos() > 0) {
             long t0 = System.currentTimeMillis();
-            int gprobsLength = curEm.markers().sumGenotypes();
+            int gprobsLength = curEm.markers().sumPhasedGenotypes();
             double[] gprobsA = new double[gprobsLength];
             double[] gprobsB = new double[gprobsLength];
             DuoBaum duoBaum = new DuoBaum(dag, curEm, par.seed(), nCopies);
@@ -463,7 +463,7 @@ public final class HapPairSampler {
             List<HapPair> sampledHaps, GenotypeValues gv) {
         if (fam.nTrios() > 0) {
             long t0 = System.currentTimeMillis();
-            int gprobsLength = curEm.markers().sumGenotypes();
+            int gprobsLength = curEm.markers().sumPhasedGenotypes();
             double[] gprobsA = new double[gprobsLength];
             double[] gprobsB = new double[gprobsLength];
             double[] gprobsC = new double[gprobsLength];

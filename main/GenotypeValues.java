@@ -37,7 +37,7 @@ public interface GenotypeValues {
      *
      * @param marker a marker index.
      * @param sample a sample index.
-     * @param genotype a genotype index.
+     * @param genotype a genotype index for an unphased genotype.
      * @return the specified genotype value.
      *
      * @throws IndexOutOfBoundsException if
@@ -47,7 +47,25 @@ public interface GenotypeValues {
      * @throws IndexOutOfBoundsException if
      * {@code genotype<0 || genotype>=this.marker(marker).nGenotypes()}.
      */
-    float value(int marker, int sample, int genotype);
+    float unphased_value(int marker, int sample, int genotype);
+
+    /**
+     * Returns the specified genotype value.
+     *
+     * @param marker a marker index.
+     * @param sample a sample index.
+     * @param genotype a genotype index for a phased genotype.
+     * @return the specified genotype value.
+     *
+     * @throws IndexOutOfBoundsException if
+     * {@code marker<0 || marker>=this.nMarkers()}.
+     * @throws IndexOutOfBoundsException if
+     * {@code sample<0 || sample>=this.nSamples()}.
+     * @throws IndexOutOfBoundsException if
+     * {@code genotype<0 || genotype>=this.marker(marker).nGenotypes()}.
+     */
+    float phased_value(int marker, int sample, int genotype);
+
 
     /**
      * Attempt to add the specified genotype values to the genotype values

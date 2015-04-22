@@ -248,7 +248,7 @@ public final class VcfWriter {
                 if (sampleIndex < 0) {
                     throw new IllegalArgumentException("inconsistent samples");
                 }
-                int nGenotypes = gv.marker(marker).nGenotypes();
+                int nUnphasedGenotypes = gv.marker(marker).nUnphasedGenotypes();
                 sumAndAltDose(gv, marker, sampleIndex, sumAndAltDose);
                 float sum = sumAndAltDose[0];
                 float altDoseSum = sumAndAltDose[1];
@@ -261,9 +261,9 @@ public final class VcfWriter {
                 else {
                     out.print(Const.colon);
                     out.print(df3.format(altDoseSum/sum));
-                    for (int gt=0; gt<nGenotypes; ++gt) {
+                    for (int gt=0; gt<nUnphasedGenotypes; ++gt) {
                         out.print(gt==0 ? Const.colon : Const.comma);
-                        double v = gv.value(marker, sampleIndex, gt)/sum;
+                        double v = gv.unphased_value(marker, sampleIndex, gt)/sum;
                         out.print(df3.format(v));
                     }
                 }
@@ -312,15 +312,15 @@ public final class VcfWriter {
         int gt = 0;
         for (int a2=0; a2<nAlleles; ++a2) {
             for (int a1=0; a1<a2; ++a1) {
-                float f = gv.value(marker, sample, gt++);
+                float f = gv.unphased_value(marker, sample, gt++);
                 sum += f;
                 altSum += (a1==0) ? f : (2.0f)*f;
             }
-            float f = gv.value(marker, sample, gt++);
+            float f = gv.unphased_value(marker, sample, gt++);
             sum += f;
             altSum += (a2==0) ? 0.0 : (2.0f)*f;
         }
-        assert gt==gv.marker(marker).nGenotypes();
+        assert gt==gv.marker(marker).nUnphasedGenotypes();
         sumAndAltAlleleSum[0] = sum;
         sumAndAltAlleleSum[1] = altSum;
     }

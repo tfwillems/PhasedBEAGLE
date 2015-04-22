@@ -20,6 +20,7 @@ package vcf;
 
 import beagleutil.ChromIds;
 import blbutil.Const;
+import blbutil.IntPair;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -282,6 +283,22 @@ public final class Markers {
      */
     public boolean contains(Marker marker) {
         return markerSet.contains(marker);
+    }
+
+    /**
+     * Returns the pair of phased genotype indices associated with 
+     * the unpaired genotype index for the provided marker
+     * @param marker a marker index
+     * @param unphased_index the unphased genotype index
+     * @return the pair of phased genotype indices associated with the unpaired genotype index
+     * @throws IndexOutOfBoundsException if {@code marker < 0 || marker >= this.nMarkers()}.
+     */
+    public IntPair get_phased_indices(int marker, int unphased_index){
+        int index_1;
+        int index_2;
+        if (true)
+            throw new IllegalArgumentException("get_unphased_indices function not implemented");
+        return new IntPair(index_1, index_2);
     }
 
     /**

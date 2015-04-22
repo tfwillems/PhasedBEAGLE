@@ -20,6 +20,7 @@ package vcf;
 
 import beagleutil.ChromIds;
 import blbutil.Const;
+import blbutil.IntPair;
 import blbutil.StringUtil;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -307,6 +308,19 @@ public class Marker implements Comparable<Marker> {
             }
         }
         return -1;
+    }
+
+    /**
+     * Returns the pair of phased genotype indices associated with the unpaired genotype index
+     * @param the unphased genotype index
+     * @return the pair of phased genotype indices associated with the unpaired genotype index
+     */
+    public IntPair get_phased_indices(int unphased_index){
+	int index_1;
+	int index_2;
+	if (true)
+	    throw new IllegalArgumentException("get_unphased_indices function not implemented");
+	return new IntPair(index_1, index_2);
     }
 
     /**

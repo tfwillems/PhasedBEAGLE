@@ -65,8 +65,13 @@ public final class BasicGenotypeValues implements GenotypeValues {
     }
 
     @Override
-    public float value(int marker, int sample, int genotype) {
-        return this.values.get(sample).value(marker, genotype);
+    public float unphased_value(int marker, int sample, int genotype) {
+        return this.values.get(sample).unphased_value(marker, genotype);
+    }
+
+    @Override
+    public float phased_value(int marker, int sample, int genotype) {
+        return this.values.get(sample).phased_value(marker, genotype);
     }
 
     @Override

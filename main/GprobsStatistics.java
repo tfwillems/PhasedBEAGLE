@@ -83,21 +83,21 @@ public class GprobsStatistics {
     private static void setProbs(GenotypeValues gv, int marker, int sample,
             float[] gtProbs, float[] alleleFreq) {
         Arrays.fill(gtProbs, 0.0f);
-        int nGt = gv.marker(marker).nGenotypes();
+        int nGt = gv.marker(marker).nUnphasedGenotypes();
         float sum = 0.0f;
         for (int gt=0; gt<nGt; ++gt) {
-            sum += gv.value(marker, sample, gt);
+            sum += gv.unphased_value(marker, sample, gt);
         }
 
         int gt = -1;
         for (int a2=0; a2<alleleFreq.length; ++a2) {
             for (int a1=0; a1<a2; ++a1) {
-                float gprob = gv.value(marker, sample, ++gt)/sum;
+                float gprob = gv.unphased_value(marker, sample, ++gt)/sum;
                 alleleFreq[a1] += gprob;
                 alleleFreq[a2] += gprob;
                 gtProbs[ (a1==0) ? 1 : 2 ] += gprob;
             }
-            float gprob = gv.value(marker, sample, ++gt)/sum;
+            float gprob = gv.unphased_value(marker, sample, ++gt)/sum;
             alleleFreq[a2] += 2*gprob;
             gtProbs[ (a2==0) ? 0 : 2] += gprob;
         }
