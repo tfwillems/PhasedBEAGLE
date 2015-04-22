@@ -94,7 +94,7 @@ public interface GenotypeValues {
      * {@code values.length!=this.markers().sumPhasedGenotypes()}.
      * @throws NullPointerException if {@code values==null}.
      */
-    //void add(int sample, double[] values);
+    void add(int sample, double[] values);
 
     /**
      * Attempt to add the specified value to the specified genotype value.
