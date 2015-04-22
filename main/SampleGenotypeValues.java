@@ -96,7 +96,11 @@ public class SampleGenotypeValues {
     public synchronized float unphased_value(int marker, int genotype) {
         checkUnphasedGenotype(marker, genotype);
 	IntPair indices = markers.get_phased_indices(marker, genotype);
-        return gtValues[markers.sumPhasedGenotypes(marker) + indices.first()] + gtValues[markers.sumPhasedGenotypes(marker) + indices.second()];
+	// Don't double count homozygotes
+	if (indices.first() != indices.second())
+	    return gtValues[markers.sumPhasedGenotypes(marker) + indices.first()] + gtValues[markers.sumPhasedGenotypes(marker) + indices.second()];
+	else
+	    return gtValues[markers.sumPhasedGenotypes(marker) + indices.first()];
     }
 
     /**

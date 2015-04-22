@@ -20,7 +20,6 @@ package sample;
 
 import dag.Dag;
 import java.util.Arrays;
-import vcf.BasicGL;
 import vcf.GL;
 
 /**
@@ -284,9 +283,9 @@ public class TrioBaumLevel {
             double pB2 = dag.condEdgeProb(marker, edgesB2[j]);
 
             double stateProb = fwdValues[j] * bwdValues[j];
-            int gtIndexA = BasicGL.phased_genotype(symbolA1, symbolA2);
-            int gtIndexB = BasicGL.phased_genotype(symbolB1, symbolB2);
-            int gtIndexC = BasicGL.phased_genotype(symbolA1, symbolB1);
+            int gtIndexA = gl.marker(marker).phased_genotype(symbolA1, symbolA2);
+            int gtIndexB = gl.marker(marker).phased_genotype(symbolB1, symbolB2);
+            int gtIndexC = gl.marker(marker).phased_genotype(symbolA1, symbolB1);
             // gtProbsA, gtProbsB, gtProbsC initialized in setForwardValues() method
             gtProbsA[gtIndexA] += stateProb;
             gtProbsB[gtIndexB] += stateProb;

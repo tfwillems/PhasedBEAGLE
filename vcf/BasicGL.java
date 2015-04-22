@@ -37,59 +37,6 @@ public final class BasicGL implements GL {
     private final boolean isRefData;
 
     /**
-     * Returns the genotype index corresponding to the
-     * specified unordered alleles.
-     * @param a1 the first allele index of an unordered genotype.
-     * @param a2 the second allele index of an unordered genotype.
-     * @return the genotype index corresponding to the
-     * specified unordered alleles.
-     * @throws IllegalArgumentException if {@code a1 < 0 || a2 < 0}.
-     */
-    public static int unphased_genotype(byte a1, byte a2) {
-        if (a1<=a2) {
-            if (a1 < 0) {
-                String s = "allele < 0: " + a1 + " " + a2;
-                throw new IllegalArgumentException(s);
-            }
-            return (a2*(a2+1))/2 + a1;
-        }
-        else {
-            if (a2<0) {
-                String s = "allele < 0: " + a1 + " " + a2;
-                throw new IllegalArgumentException(s);
-            }
-            return (a1*(a1+1))/2 + a2;
-        }
-    }
-
-
-    /**
-     * Returns the genotype index corresponding to the
-     * specified ordered alleles.
-     * @param a1 the first allele index of an ordered genotype.
-     * @param a2 the second allele index of an ordered genotype.
-     * @return the genotype index corresponding to the
-     * specified ordered alleles.
-     * @throws IllegalArgumentException if {@code a1 < 0 || a2 < 0}.
-     */
-    public static int phased_genotype(byte a1, byte a2) {
-	if (a1 < 0) {
-	    String s = "allele < 0: " + a1 + " " + a2;
-	    throw new IllegalArgumentException(s);
-	}
-
-	if (a2<0) {
-	    String s = "allele < 0: " + a1 + " " + a2;
-	    throw new IllegalArgumentException(s);
-	}        
-
-	// TO DO: Implement
-	if (true)
-	    throw new IllegalArgumentException("phased_genotype function not implemented");
-	return 0;
-    }
-
-    /**
      * Constructs a {@code BasicGL} instance.
      *
      * @param samples the list of samples with genotype data.

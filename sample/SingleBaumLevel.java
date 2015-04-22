@@ -20,7 +20,6 @@ package sample;
 
 import dag.Dag;
 import java.util.Arrays;
-import vcf.BasicGL;
 import vcf.GL;
 
 /**
@@ -231,7 +230,7 @@ public class SingleBaumLevel {
             double tp2 = dag.condEdgeProb(marker, edge2);
 
             double stateProb = fwdValues[j] * bwdValues[j];
-            int gtIndex = BasicGL.phased_genotype(symbol1, symbol2);
+            int gtIndex = gl.marker(marker).phased_genotype(symbol1, symbol2);
             // gtProbs initialized in setForwardValues() method
             gtProbs[gtIndex] += stateProb;
             gtProbsSum += stateProb;

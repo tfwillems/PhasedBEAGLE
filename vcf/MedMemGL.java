@@ -194,7 +194,7 @@ public final class MedMemGL implements VcfEmission {
             if (fatherAlleles[a1]) {
                 for (byte a2=0; a2<nAlleles; ++a2) {
                     if (motherAlleles[a2]) {
-                        int gt = BasicGL.unphased_genotype(a1, a2);
+                        int gt = marker.unphased_genotype(a1, a2);
                         if (like[base + gt] >= minLR) {
                             return true;
                         }
@@ -211,7 +211,7 @@ public final class MedMemGL implements VcfEmission {
         int base = sample*marker.nUnphasedGenotypes();
         for (byte a1=0; a1<alleles.length; ++a1) {
             for (byte a2=a1; a2<alleles.length; ++a2) {
-                int gt = BasicGL.unphased_genotype(a1, a2);
+                int gt = marker.unphased_genotype(a1, a2);
                 if ((like[base + gt] >= minLR)) {
                     alleles[a1] |= true;
                     alleles[a2] |= true;

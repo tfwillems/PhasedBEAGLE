@@ -129,10 +129,12 @@ public class Marker implements Comparable<Marker> {
 	unphasedToPhasedA = new int[nUnphasedGenotypes];
 	unphasedToPhasedB = new int[nUnphasedGenotypes];
 	int index = 0;
+
+	assert alleles.length < Byte.MAX_VALUE;
 	for (int i=0; i < alleles.length; i++) {
 	    for (int j=0; j <= i; j++) {
-		unphasedToPhasedA[index] = i;
-		unphasedToPhasedB[index] = j;
+		unphasedToPhasedA[index] = this.phased_genotype((byte)i,(byte)j);
+		unphasedToPhasedB[index] = this.phased_genotype((byte)j,(byte)i);
 		index++;
 	    }
 	}
@@ -327,6 +329,43 @@ public class Marker implements Comparable<Marker> {
             }
         }
         return -1;
+    }
+
+    /**
+     * Returns the genotype index corresponding to the
+     * specified unordered alleles.
+     * @param a1 the first allele index of an unordered genotype.
+     * @param a2 the second allele index of an unordered genotype.
+     * @return the genotype index corresponding to the
+     * specified unordered alleles.
+     * @throws IllegalArgumentException if {@code a1 < 0 || a2 < 0 || a1 >= this.nAlleles() || a2 >= this.nAlleles()}.
+     */
+    public int unphased_genotype(byte a1, byte a2) {
+	if (a1 < 0 || a2 < 0 || a1 >= alleles.length || a2 >= alleles.length){
+	    String s = "invalid genotype indexes: " + a1 + " " + a2;
+	    throw new IllegalArgumentException(s);
+	}
+	if (a1 <= a2) 
+            return (a2*(a2+1))/2 + a1;
+        else
+            return (a1*(a1+1))/2 + a2;
+    }
+
+    /**
+     * Returns the genotype index corresponding to the
+     * specified ordered alleles.
+     * @param a1 the first allele index of an ordered genotype.
+     * @param a2 the second allele index of an ordered genotype.
+     * @return the genotype index corresponding to the
+     * specified ordered alleles.
+     * @throws IllegalArgumentException if {@code a1 < 0 || a2 < 0 || a1 >= this.nAlleles() || a2 >= this.nAlleles()}.
+     */
+    public int phased_genotype(byte a1, byte a2) {
+	if (a1 < 0 || a2 < 0 || a1 >= alleles.length || a2 >= alleles.length){
+	    String s = "invalid genotype indexes: " + a1 + " " + a2;
+	    throw new IllegalArgumentException(s);
+	}
+	return a1*alleles.length + a2;
     }
 
     /**
