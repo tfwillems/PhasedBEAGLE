@@ -208,7 +208,7 @@ public class Main {
                     byte a1 = gl.allele1(m, s);
                     byte a2 = gl.allele2(m, s);
                     if (a1>=0 && a2>=0) {
-                        int gt = VcfRecord.gtIndex(a1, a2);
+			int gt = gl.marker(m).phased_genotype(a1, a2);
                         restrictGV.add(m, s, gt, 1.0);
                     }
                 }
