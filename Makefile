@@ -24,7 +24,7 @@ SAMTOOLS_CLASSES = net/sf/samtools/Defaults.java net/sf/samtools/FileTruncatedEx
 
 default: classes PhasedBeagle
 
-classes: $(BEAGLE_UTIL_CLASSES:.java=.class) $(BLB_UTIL_CLASSES:.java=.class) $(DAG_CLASSES:.java=.class) $(HAPLOTYPE_CLASSES:.java=.class) $(IBD_CLASSES:.java=.class) $(SAMPLE_CLASSES:.java=.class) $(VCF_CLASSES:.java=.class) $(SAMTOOLS_CLASSES:.java=.class) $(MAIN_CLASSES:.java=.class)
+classes: $(BEAGLE_UTIL_CLASSES:.java=.class) $(BLB_UTIL_CLASSES:.java=.class) $(DAG_CLASSES:.java=.class) $(HAPLOTYPE_CLASSES:.java=.class) $(IBD_CLASSES:.java=.class) $(SAMPLE_CLASSES:.java=.class) $(SAMTOOLS_CLASSES:.java=.class) $(VCF_CLASSES:.java=.class) $(MAIN_CLASSES:.java=.class)
 
 clean:
 	$(RM) beagleutil/*.class blbutil/*.class dag/*.class haplotyple/*.class ibd/*.class main/*.class sample/*.class vcf/*.class net/sf/samtools/*.class net/sf/samtools/util/*.class PhasedBEAGLE.jar

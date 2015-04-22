@@ -44,7 +44,7 @@ public final class MedMemGL implements VcfEmission {
     public static final String GL_FORMAT = "GL";
 
     /**
-     * The VCF FORMAT code for phred-scaled genotype likelihood data: "GL".
+     * The VCF FORMAT code for phred-scaled genotype likelihood data: "PL".
      */
     public static final String PL_FORMAT = "PL";
 
@@ -105,7 +105,7 @@ public final class MedMemGL implements VcfEmission {
     private static float[] likelihoods(VcfRecord rec, NuclearFamilies fam,
             float minLR) {
         Marker marker = rec.marker();
-        int nGt = marker.nGenotypes();
+        int nGt = marker.nUnphasedGenotypes();
         boolean[] ba1 = new boolean[rec.marker().nAlleles()];
         boolean[] ba2 = new boolean[rec.marker().nAlleles()];
         float[] origLike = likelihoodsFromGL(rec);
@@ -141,7 +141,7 @@ public final class MedMemGL implements VcfEmission {
     }
 
     private static float[] likelihoodsFromGL(VcfRecord rec) {
-        int nGt = rec.marker().nGenotypes();
+        int nGt = rec.marker().nUnphasedGenotypes();
         String[] dataGL = rec.hasFormat(GL_FORMAT) ? rec.formatData(GL_FORMAT) : null;
         String[] dataPL = rec.hasFormat(PL_FORMAT) ? rec.formatData(PL_FORMAT) : null;
         double[] doubleLike = new double[nGt];
@@ -189,12 +189,12 @@ public final class MedMemGL implements VcfEmission {
         int nAlleles = marker.nAlleles();
         alleles(marker, like, minLR, father, fatherAlleles);
         alleles(marker, like, minLR, mother, motherAlleles);
-        int base = offspring*marker.nGenotypes();
+        int base = offspring*marker.nUnphasedGenotypes();
         for (byte a1=0; a1<nAlleles; ++a1) {
             if (fatherAlleles[a1]) {
                 for (byte a2=0; a2<nAlleles; ++a2) {
                     if (motherAlleles[a2]) {
-                        int gt = BasicGL.genotype(a1, a2);
+                        int gt = BasicGL.unphased_genotype(a1, a2);
                         if (like[base + gt] >= minLR) {
                             return true;
                         }
@@ -208,10 +208,10 @@ public final class MedMemGL implements VcfEmission {
     private static void alleles(Marker marker, float[] like, float minLR,
             int sample, boolean[] alleles) {
         Arrays.fill(alleles, false);
-        int base = sample*marker.nGenotypes();
+        int base = sample*marker.nUnphasedGenotypes();
         for (byte a1=0; a1<alleles.length; ++a1) {
             for (byte a2=a1; a2<alleles.length; ++a2) {
-                int gt = BasicGL.genotype(a1, a2);
+                int gt = BasicGL.unphased_genotype(a1, a2);
                 if ((like[base + gt] >= minLR)) {
                     alleles[a1] |= true;
                     alleles[a2] |= true;
@@ -338,7 +338,7 @@ public final class MedMemGL implements VcfEmission {
             throw new ArrayIndexOutOfBoundsException(s);
         }
         int gt = VcfRecord.gtIndex(allele1, allele2);
-        return like[(sample*marker.nGenotypes()) + gt];
+        return like[(sample*marker.nUnphasedGenotypes()) + gt];
     }
 
     /**
@@ -360,9 +360,9 @@ public final class MedMemGL implements VcfEmission {
         sb.append(Const.tab);
         sb.append("GL");
         for (int sample=0, n=samples.nSamples(); sample<n; ++sample) {
-            for (int gt=0, m=marker.nGenotypes(); gt<m; ++gt) {
+            for (int gt=0, m=marker.nUnphasedGenotypes(); gt<m; ++gt) {
                 sb.append(gt==0 ? Const.tab : Const.comma);
-                double d = Math.log10(like[(sample*marker.nGenotypes()) + gt]);
+                double d = Math.log10(like[(sample*marker.nUnphasedGenotypes()) + gt]);
                 sb.append(df.format(d));
             }
         }

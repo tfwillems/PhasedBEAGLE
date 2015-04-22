@@ -231,7 +231,7 @@ public class SingleBaumLevel {
             double tp2 = dag.condEdgeProb(marker, edge2);
 
             double stateProb = fwdValues[j] * bwdValues[j];
-            int gtIndex = BasicGL.genotype(symbol1, symbol2);
+            int gtIndex = BasicGL.phased_genotype(symbol1, symbol2);
             // gtProbs initialized in setForwardValues() method
             gtProbs[gtIndex] += stateProb;
             gtProbsSum += stateProb;

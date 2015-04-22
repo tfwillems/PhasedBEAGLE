@@ -257,8 +257,8 @@ public class DuoBaumLevel {
             double tpB2 = dag.condEdgeProb(marker, edgesB2[j]);
 
             double stateProb = fwdValues[j] * bwdValues[j];
-            int gtIndexA = BasicGL.genotype(symbolAB1, symbolA2);
-            int gtIndexB = BasicGL.genotype(symbolAB1, symbolB2);
+            int gtIndexA = BasicGL.phased_genotype(symbolAB1, symbolA2);
+            int gtIndexB = BasicGL.phased_genotype(symbolAB1, symbolB2);
             // gtProbsA, gtProbsB initialized in setForwardValues() method
             gtProbsA[gtIndexA] += stateProb;
             gtProbsB[gtIndexB] += stateProb;
