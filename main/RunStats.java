@@ -40,7 +40,7 @@ public class RunStats {
 
     private static final String shortHelp = Main.version + Const.nl
             + Main.copyright + Const.nl
-            + "Enter \"java -jar beagle.jar\" for a summary of command line "
+            + "Enter \"java -jar PhasedBEAGLE.jar\" for a summary of command line "
             + "arguments.";
     private static final DecimalFormat df2 = new DecimalFormat("0.00");
 
@@ -87,7 +87,7 @@ public class RunStats {
     void printStartInfo() {
         Utilities.duoPrint(log, shortHelp + Const.nl);
         Utilities.duoPrintln(log, "Start time: " + Utilities.timeStamp());
-        Utilities.duoPrint(log, Utilities.commandLine("beagle.jar", par.args()));
+        Utilities.duoPrint(log, Utilities.commandLine("PhasedBEAGLE.jar", par.args()));
     }
 
     /**

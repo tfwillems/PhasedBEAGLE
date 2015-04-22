@@ -151,7 +151,7 @@ public final class Parameters {
      */
     public static String usage() {
         String nl = Const.nl;
-        return  "Command line syntax: java -jar beagle.jar [arguments]" + nl
+        return  "Command line syntax: java -jar PhasedBEAGLE.jar [arguments]" + nl
                 + nl
                 + "data input/output parameters ..." + nl
                 + "  gt=<VCF file: use GT field>                        (optional)" + nl

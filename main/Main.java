@@ -55,7 +55,7 @@ public class Main {
     /**
      * The program name and version.
      */
-    public static final String version = "beagle.jar (r1399)";
+    public static final String version = "PhasedBEAGLE.jar (r1399)";
 
     /**
      * The copyright string.
