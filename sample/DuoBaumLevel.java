@@ -318,7 +318,7 @@ public class DuoBaumLevel {
      * @param gt a genotype index.
      * @return the specified posterior genotype probability for the parent.
      * @throws IndexOutOfBoundsException if
-     * {@code gt<0 || gt>=this.nGenotypes()}
+     * {@code gt<0 || gt>=this.nPhasedGenotypes()}
      */
     public double gtProbsA(int gt) {
         checkGT(gt);
@@ -331,7 +331,7 @@ public class DuoBaumLevel {
      * @param gt a genotype index.
      * @return the specified posterior genotype probability for the offspring.
      * @throws IndexOutOfBoundsException if
-     * {@code gt<0 || gt>=this.nGenotypes()}
+     * {@code gt<0 || gt>=this.nPhasedGenotypes()}
      */
     public double gtProbsB(int gt) {
         checkGT(gt);

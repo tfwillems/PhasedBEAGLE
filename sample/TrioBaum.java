@@ -190,7 +190,7 @@ public class TrioBaum {
      * are written to {@code gtProbsA}, {@code gtProbsB}, and
      * {@code gtProbsC} respectively.  The posterior probability of the
      * {@code j}-th genotype for the {@code k}-th marker is stored
-     * in element {@code gl.markers().sumGenotypes(k) + j} of the
+     * in element {@code gl.markers().sumPhasedGenotypes(k) + j} of the
      * {@code gtProbsA}, {@code gtProbsB}, and {@code gtProbsC}
      * arrays.
      * </p>

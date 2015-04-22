@@ -179,7 +179,7 @@ public class DuoBaum {
      * written to {@code gtProbsA} and {@code gtProbsB} respectively.
      * The posterior probability of the {@code j}-th genotype for
      * the {@code k}-th marker is stored at index
-     * {@code gl.markers().sumGenotypes(k) + j} in the {@code gtProbsA}
+     * {@code gl.markers().sumPhasedGenotypes(k) + j} in the {@code gtProbsA}
      * and {@code gtProbsB} arrays.
      * </p>
      * The contract for this method is unspecified if no parent haplotype
@@ -199,9 +199,9 @@ public class DuoBaum {
      * @throws IndexOutOfBoundsException if
      * {@code sampleB<0 || sampleB>=this.gl().nSamples()}
      * @throws IllegalArgumentException if
-     * {@code gtProbsA.length!=this.gl().markers().sumGenotypes()}
+     * {@code gtProbsA.length!=this.gl().markers().sumPhasedGenotypes()}
      * @throws IllegalArgumentException if
-     * {@code gtProbsB.length!=this.gl().markers().sumGenotypes()}
+     * {@code gtProbsB.length!=this.gl().markers().sumPhasedGenotypes()}
      * @throws NullPointerException if
      * {@code gtProbsA==null || gtProbsB==null}
      */

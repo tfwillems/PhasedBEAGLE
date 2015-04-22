@@ -128,9 +128,9 @@ public class SampleGenotypeValues {
      * }
      * </pre>
      *
-     * @param values an array of length {@code this.markers.sumGenotypes()}
+     * @param values an array of length {@code this.markers.sumPhasedGenotypes()}
      * containing the genotype values to be added.     * @throws IllegalArgumentException if
-     * {@code values.length!=this.markers().sumGenotypes()}.
+     * {@code values.length!=this.markers().sumPhasedGenotypes()}.
      * @throws NullPointerException if {@code values==null}.
      */
     public synchronized void add(double[] values) {

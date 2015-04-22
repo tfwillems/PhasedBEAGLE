@@ -85,7 +85,7 @@ public interface SingleBaumInterface {
      * Posterior genotype probabilities  are written to the specified array.
      * The posterior probability of the {@code j}-th genotype for
      * the {@code k}-th marker is stored at index
-     * {@code gl.markers().sumGenotypes(k) + j} in the {@code gtProbs}
+     * {@code gl.markers().sumPhasedGenotypes(k) + j} in the {@code gtProbs}
      * array.
      * </p>
      * The contract for this method is unspecified if no haplotype pair
@@ -100,7 +100,7 @@ public interface SingleBaumInterface {
      * @throws IndexOutOfBoundsException if
      * {@code sample<0 || sample>=this.gl().nSamples()}
      * @throws IllegalArgumentException if
-     * {@code gtProbs.length!=this.gl().markers().sumGenotypes()}.
+     * {@code gtProbs.length!=this.gl().markers().sumPhasedGenotypes()}.
      * @throws NullPointerException if {@code gtProbs==null}.
      */
     List<HapPair> randomSample(int sample, double[] gtProbs);

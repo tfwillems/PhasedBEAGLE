@@ -288,7 +288,7 @@ public class SingleBaumLevel {
      * @param gt a genotype index.
      * @return the specified posterior genotype probability.
      * @throws IndexOutOfBoundsException if
-     * {@code gt<0 || gt>=this.nGenotypes()}
+     * {@code gt<0 || gt>=this.nPhasedGenotypes()}
      */
     public double gtProbs(int gt) {
         if (gt >= nPhasedGenotypes) {

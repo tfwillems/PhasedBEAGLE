@@ -49,6 +49,8 @@ public class Marker implements Comparable<Marker> {
     private final String[] alleles;
     private final int nUnphasedGenotypes, nPhasedGenotypes;
     private final int end;
+    private int[] unphasedToPhasedA;
+    private int[] unphasedToPhasedB;
 
     /**
      * Constructs a new {@code Marker} instance from the specified
@@ -87,6 +89,7 @@ public class Marker implements Comparable<Marker> {
         this.nUnphasedGenotypes = alleles.length*(alleles.length+1)/2;
         this.nPhasedGenotypes   = alleles.length*alleles.length;
         this.end = extractEnd(fields[7]);
+	compute_unphased_mapping();
     }
 
     /**
@@ -118,7 +121,23 @@ public class Marker implements Comparable<Marker> {
         this.nPhasedGenotypes   = m.nPhasedGenotypes;
         this.nUnphasedGenotypes = m.nUnphasedGenotypes;
         this.end = m.end;
+	compute_unphased_mapping();
     }
+
+
+    private void compute_unphased_mapping(){
+	unphasedToPhasedA = new int[nUnphasedGenotypes];
+	unphasedToPhasedB = new int[nUnphasedGenotypes];
+	int index = 0;
+	for (int i=0; i < alleles.length; i++) {
+	    for (int j=0; j <= i; j++) {
+		unphasedToPhasedA[index] = i;
+		unphasedToPhasedB[index] = j;
+		index++;
+	    }
+	}
+    }
+
 
     private static String flipAllele(String allele) {
         char[] ca = new char[allele.length()];
@@ -312,15 +331,11 @@ public class Marker implements Comparable<Marker> {
 
     /**
      * Returns the pair of phased genotype indices associated with the unpaired genotype index
-     * @param the unphased genotype index
+     * @param genotype the unphased genotype index
      * @return the pair of phased genotype indices associated with the unpaired genotype index
      */
-    public IntPair get_phased_indices(int unphased_index){
-	int index_1;
-	int index_2;
-	if (true)
-	    throw new IllegalArgumentException("get_unphased_indices function not implemented");
-	return new IntPair(index_1, index_2);
+    public IntPair get_phased_indices(int genotype){
+	return new IntPair(unphasedToPhasedA[genotype], unphasedToPhasedB[genotype]);
     }
 
     /**

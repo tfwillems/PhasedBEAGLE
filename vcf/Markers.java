@@ -294,11 +294,7 @@ public final class Markers {
      * @throws IndexOutOfBoundsException if {@code marker < 0 || marker >= this.nMarkers()}.
      */
     public IntPair get_phased_indices(int marker, int unphased_index){
-        int index_1;
-        int index_2;
-        if (true)
-            throw new IllegalArgumentException("get_unphased_indices function not implemented");
-        return new IntPair(index_1, index_2);
+	return fwdMarkers[marker].get_phased_indices(unphased_index);
     }
 
     /**

@@ -153,7 +153,7 @@ public class ConsensusPhasing {
 
     private static int[] gtCounts(List<HapPair> hapList, Markers markers,
             int marker) {
-        int nGt = markers.marker(marker).nGenotypes();
+        int nGt = markers.marker(marker).nUnphasedGenotypes();
         int[] gtCounts = new int[nGt];
         for (int j=0, n=hapList.size(); j<n; ++j) {
             HapPair hp = hapList.get(j);

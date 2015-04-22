@@ -177,7 +177,7 @@ public class HapBaum {
      * Posterior genotype probabilities  are written to the specified array.
      * The posterior probability of the {@code j}-th genotype for
      * the {@code k}-th marker is stored at index
-     * {@code gl.markers().sumGenotypes(k) + j} in the {@code gprobs}
+     * {@code gl.markers().sumPhasedGenotypes(k) + j} in the {@code gprobs}
      * array.
      * </p>
      * The contract for this method is unspecified if no haplotype pair
@@ -192,7 +192,7 @@ public class HapBaum {
      * @throws IndexOutOfBoundsException if
      * {@code sample<0 || sample>=this.al().nSamples()}
      * @throws IllegalArgumentException if
-     * {@code gprobs.length!=this.al().markers().sumGenotypes()}
+     * {@code gprobs.length!=this.al().markers().sumPhasedGenotypes()}
      * @throws NullPointerException if {@code gprobs==null}
      */
     public List<HapPair> randomSample(int sample, double[] gtProbs) {

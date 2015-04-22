@@ -350,7 +350,7 @@ public class TrioBaumLevel {
      * @param gt a genotype index.
      * @return the specified posterior genotype probability for the father.
      * @throws IndexOutOfBoundsException if
-     * {@code gt<0 || gt>=this.nGenotypes()}
+     * {@code gt<0 || gt>=this.nPhasedGenotypes()}
      */
     public double gtProbsA(int gt) {
         checkGT(gt);
@@ -363,7 +363,7 @@ public class TrioBaumLevel {
      * @param gt a genotype index.
      * @return the specified posterior genotype probability for the mother.
      * @throws IndexOutOfBoundsException if
-     * {@code gt<0 || gt>=this.nGenotypes()}
+     * {@code gt<0 || gt>=this.nPhasedGenotypes()}
      */
     public double gtProbsB(int gt) {
         checkGT(gt);
@@ -376,7 +376,7 @@ public class TrioBaumLevel {
      * @param gt a genotype index.
      * @return the specified posterior genotype probability for the offspring.
      * @throws IndexOutOfBoundsException if
-     * {@code gt<0 || gt>=this.nGenotypes()}
+     * {@code gt<0 || gt>=this.nPhasedGenotypes()}
      */
     public double gtProbsC(int gt) {
         checkGT(gt);

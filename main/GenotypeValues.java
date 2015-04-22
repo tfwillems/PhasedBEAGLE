@@ -45,7 +45,7 @@ public interface GenotypeValues {
      * @throws IndexOutOfBoundsException if
      * {@code sample<0 || sample>=this.nSamples()}.
      * @throws IndexOutOfBoundsException if
-     * {@code genotype<0 || genotype>=this.marker(marker).nGenotypes()}.
+     * {@code genotype<0 || genotype>=this.marker(marker).nUnphasedGenotypes()}.
      */
     float unphased_value(int marker, int sample, int genotype);
 
@@ -62,7 +62,7 @@ public interface GenotypeValues {
      * @throws IndexOutOfBoundsException if
      * {@code sample<0 || sample>=this.nSamples()}.
      * @throws IndexOutOfBoundsException if
-     * {@code genotype<0 || genotype>=this.marker(marker).nGenotypes()}.
+     * {@code genotype<0 || genotype>=this.marker(marker).nPhasedGenotypes()}.
      */
     float phased_value(int marker, int sample, int genotype);
 
@@ -76,8 +76,8 @@ public interface GenotypeValues {
      * This method is equivalent to
      * <pre>
      * for (m=0; m&lt;this.nMarkers(); ++m) {
-     *     offset = this.markers().sumGenotypes(m);
-     *     for (gt=0; gt&lt;this.marker(m).nGenotypes(); ++gt) {
+     *     offset = this.markers().sumPhasedGenotypes(m);
+     *     for (gt=0; gt&lt;this.marker(m).nPhasedGenotypes(); ++gt) {
      *         this.add(marker, sample, gt, values[offset + gt])
      *     }
      * }
@@ -85,16 +85,16 @@ public interface GenotypeValues {
      *
      * @param sample a sample index.
      * @param values an array of length
-     * {@code this.markers.sumGenotypes()} containing the genotype values to
+     * {@code this.markers.sumPhasedGenotypes()} containing the genotype values to
      * be added.
      *
      * @throws IndexOutOfBoundsException if
      * if {@code sample<0 || sample>=this.nSamples()}.
      * @throws IllegalArgumentException if
-     * {@code values.length!=this.markers().sumGenotypes()}.
+     * {@code values.length!=this.markers().sumPhasedGenotypes()}.
      * @throws NullPointerException if {@code values==null}.
      */
-    void add(int sample, double[] values);
+    //void add(int sample, double[] values);
 
     /**
      * Attempt to add the specified value to the specified genotype value.
@@ -110,7 +110,7 @@ public interface GenotypeValues {
      * @throws IndexOutOfBoundsException if
      * {@code sample<0 || sample>=this.nSamples()}.
      * @throws IndexOutOfBoundsException if
-     * {@code genotype<0 || genotype>=this.marker(marker).nGenotypes()}.
+     * {@code genotype<0 || genotype>=this.marker(marker).nPhasedGenotypes()}.
      */
     void add(int marker, int sample, int genotype, double value);
 
