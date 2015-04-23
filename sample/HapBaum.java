@@ -225,20 +225,19 @@ public class HapBaum {
     }
 
     private void setGprobs(double[] gtProbs) {
-        int index = 0;
-        int alEnd = 0;
-        for (int m=0; m<nMarkers; ++m) {
-            int alStart = alEnd;
-            alEnd = al.markers().sumAlleles(m+1);
-            for (int a2=alStart; a2<alEnd; ++a2) {
-                for (int a1=alStart; a1<a2; ++a1) {
-                    gtProbs[index++] = (alProbs1[a1]*alProbs2[a2]
-                            + alProbs1[a2]*alProbs2[a1]);
-                }
-                gtProbs[index++] = alProbs1[a2]*alProbs2[a2];
-            }
-        }
-        assert index==gtProbs.length;
+	int index = 0;
+	for (int m=0; m < nMarkers; ++m){
+	    int nAlleles = al.marker(m).nAlleles();
+	    for (int a2=0; a2 < nAlleles; ++a2){
+		for (int a1=0; a1 < a2; ++a1){
+		    gtProbs[index+al.marker(m).phased_genotype((byte)a1, (byte)a2)] = alProbs1[a1]*alProbs2[a2];
+		    gtProbs[index+al.marker(m).phased_genotype((byte)a2, (byte)a1)] = alProbs1[a2]*alProbs2[a1];
+		}
+		gtProbs[index+al.marker(m).phased_genotype((byte)a2, (byte)a2)] = alProbs1[a2]*alProbs2[a2];
+	    }
+	    index += al.marker(m).nPhasedGenotypes();
+	}
+	assert index==gtProbs.length;
     }
 
     private void setAlProbs(HapBaumLevel level, double[] alProbs) {
