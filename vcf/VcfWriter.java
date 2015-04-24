@@ -62,6 +62,8 @@ public final class VcfWriter {
             + "Description=\"Log10-scaled Genotype Likelihood\">";
     private static final String gpFormat = "##FORMAT=<ID=GP,Number=G,Type=Float,"
             + "Description=\"Estimated Genotype Probability\">";
+    private static final String pgpFormat = "##FORMAT=<ID=PGP,Number=.,Type=Float,"
+            + "Description=\"Estimated Genotype Probability for each Phased Genotype\">";
 
     private static final String shortChromPrefix= "#CHROM" + Const.tab + "POS"
             + Const.tab + "ID" + Const.tab + "REF" + Const.tab + "ALT"
@@ -191,6 +193,7 @@ public final class VcfWriter {
         if (printGP) {
             out.println(dsFormat);
             out.println(gpFormat);
+	    out.println(pgpFormat);
         }
         out.print(longChromPrefix);
         for (String id : sampleIds) {
@@ -249,6 +252,7 @@ public final class VcfWriter {
                     throw new IllegalArgumentException("inconsistent samples");
                 }
                 int nUnphasedGenotypes = gv.marker(marker).nUnphasedGenotypes();
+		int nPhasedGenotypes = gv.marker(marker).nPhasedGenotypes();
                 sumAndAltDose(gv, marker, sampleIndex, sumAndAltDose);
                 float sum = sumAndAltDose[0];
                 float altDoseSum = sumAndAltDose[1];
@@ -257,6 +261,8 @@ public final class VcfWriter {
                     out.print(Const.MISSING_DATA_CHAR);
                     out.print(Const.colon);
                     out.print(Const.MISSING_DATA_CHAR);
+		    out.print(Const.colon);
+		    out.print(Const.MISSING_DATA_CHAR);
                 }
                 else {
                     out.print(Const.colon);
@@ -266,6 +272,11 @@ public final class VcfWriter {
                         double v = gv.unphased_value(marker, sampleIndex, gt)/sum;
                         out.print(df3.format(v));
                     }
+		    for (int gt=0; gt<nPhasedGenotypes; ++gt) {
+			out.print(gt==0 ? Const.colon : Const.comma);
+			double v = gv.phased_value(marker, sampleIndex, gt)/sum;
+			out.print(df3.format(v));
+		    }
                 }
             }
             out.println();
@@ -367,6 +378,6 @@ public final class VcfWriter {
             out.print(df3.format(alleleFreq[j]));
         }
         out.print(Const.tab);
-        out.print("GT:DS:GP");
+        out.print("GT:DS:GP:PGP");
     }
 }
