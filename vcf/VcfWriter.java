@@ -53,6 +53,10 @@ public final class VcfWriter {
     private static final String dr2Info = "##INFO=<ID=DR2,Number=1,Type=Float,"
             + "Description=\"Dosage R-Squared: estimated correlation between "
             + "estimated ALT dose [P(RA) + 2*P(AA)] and true ALT dose\">";
+    private static final String startInfo = "##INFO=<ID=START,Number=1,Type=Integer,"
+	+ "Description=\"Start coordinate for original annotated region\">";
+    private static final String endInfo   = "##INFO=<ID=END,Number=1,Type=Integer,"
+	+ "Description=\"End coordinate for original annotated region\">";
 
     private static final String gtFormat = "##FORMAT=<ID=GT,Number=1,Type=String,"
             + "Description=\"Genotype\">";
@@ -184,6 +188,10 @@ public final class VcfWriter {
             out.println(ar2Info);
             out.println(dr2Info);
         }
+       
+	out.println(startInfo);
+	out.println(endInfo);
+
         if (printGT) {
             out.println(gtFormat);
         }
@@ -388,9 +396,9 @@ public final class VcfWriter {
 
 	// Print INFO fields if they were in the reference VCF
 	if (gv.marker(marker).start() != -1)
-	    out.print("START=" + gv.marker(marker).start() + ";");
+	    out.print(";START=" + gv.marker(marker).start());
 	if (gv.marker(marker).end() != -1)
-	    out.print("END=" + gv.marker(marker).end() + ";");
+	    out.print(";END=" + gv.marker(marker).end());
 
         out.print(Const.tab);
         out.print("GT:DS:GP:PGP");

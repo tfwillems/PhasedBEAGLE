@@ -343,7 +343,7 @@ public class Marker implements Comparable<Marker> {
         String key = "START=";
         for (String field : fields) {
             if (field.startsWith(key)) {
-                String value = field.substring(4);
+                String value = field.substring(6);
                 for (int j=0, n=value.length(); j<n; ++j) {
                     char c = value.charAt(j);
                     if (Character.isDigit(c)==false) {
