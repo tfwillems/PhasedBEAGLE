@@ -48,6 +48,7 @@ public class Marker implements Comparable<Marker> {
     private final String id;
     private final String[] alleles;
     private final int nUnphasedGenotypes, nPhasedGenotypes;
+    private final int start;
     private final int end;
     private int[] unphasedToPhasedA;
     private int[] unphasedToPhasedB;
@@ -88,7 +89,8 @@ public class Marker implements Comparable<Marker> {
         this.alleles = alleles(fields[3], altAlleles);
         this.nUnphasedGenotypes = alleles.length*(alleles.length+1)/2;
         this.nPhasedGenotypes   = alleles.length*alleles.length;
-        this.end = extractEnd(fields[7]);
+	this.start = extractStart(fields[7]);
+        this.end   = extractEnd(fields[7]);
 	compute_unphased_mapping();
     }
 
@@ -120,7 +122,8 @@ public class Marker implements Comparable<Marker> {
 	
         this.nPhasedGenotypes   = m.nPhasedGenotypes;
         this.nUnphasedGenotypes = m.nUnphasedGenotypes;
-        this.end = m.end;
+	this.start = m.start;
+        this.end   = m.end;
 	compute_unphased_mapping();
     }
 
@@ -330,6 +333,31 @@ public class Marker implements Comparable<Marker> {
         }
         return -1;
     }
+    
+    /*
+     * Returns value of first START key in the specified INFO field, or
+     * returns -1 if there is no START key in the INFO field.
+     */
+    private static int extractStart(String info) {
+        String[] fields = StringUtil.getFields(info, Const.semicolon);
+        String key = "START=";
+        for (String field : fields) {
+            if (field.startsWith(key)) {
+                String value = field.substring(4);
+                for (int j=0, n=value.length(); j<n; ++j) {
+                    char c = value.charAt(j);
+                    if (Character.isDigit(c)==false) {
+                        String s = "INFO START field has non-numeric value: "
+                                + info;
+                        throw new IllegalArgumentException(s);
+                    }
+                }
+                return Integer.parseInt(value);
+            }
+        }
+        return -1;
+    }
+
 
     /**
      * Returns the genotype index corresponding to the
@@ -477,12 +505,34 @@ public class Marker implements Comparable<Marker> {
     }
 
     /**
+     * Returns the INFO START field, or -1 if there is no INFO START field.
+     *
+     * @return the INFO START field, or -1 if there is no INFO START field.
+     */
+    public int start() {
+        return start;
+    }
+
+    /**
      * Returns the INFO END field, or -1 if there is no INFO END field.
      *
      * @return the INFO END field, or -1 if there is no INFO END field.
      */
     public int end() {
         return end;
+    }
+
+    /**
+     * Returns true iff the Marker is a SNP
+     *
+     * @return true iff the Marker is a SNP
+     */
+    public boolean is_snp() {
+	for (String allele: alleles){
+	    if (allele.length() != 1)
+		return false;
+	}
+	return true;
     }
 
     /**
