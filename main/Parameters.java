@@ -45,6 +45,7 @@ public final class Parameters {
     private final File ped;
     private final String chrom;
     private final float maxlr;
+    private final boolean outputsnps;
 
     // algorithm parameters
     private final int nthreads;
@@ -107,6 +108,7 @@ public final class Parameters {
                 Validate.stringArg("ped", argsMap, false, null, null));
         chrom = Validate.stringArg("chrom", argsMap, false, null, null);
         maxlr = Validate.floatArg("maxlr", argsMap, false, 5000.0f, 1.1f, FMAX);
+	outputsnps = Validate.booleanArg("snpsout", argsMap, false, true);
 
         // algorithm parameters
         window = Validate.intArg("window", argsMap, false, 50000, 1, IMAX);
@@ -163,7 +165,8 @@ public final class Parameters {
                 + "  excludemarkers=<file with 1 marker ID per line>    (optional)" + nl
                 + "  ped=<linkage format pedigree file>                 (optional)" + nl
                 + "  chrom=<[chrom] or [chrom]:[start]-[end]>           (optional)" + nl
-                + "  maxlr=<max GL/PL likelihood ratio>                 (default=5000)" + nl + nl
+                + "  maxlr=<max GL/PL likelihood ratio>                 (default=5000)" + nl
+	        + "  snpsout=<output snp records (true/false)>          (default=true)" + nl + nl
 
                 + "algorithm parameters ..." + nl
                 + "  nthreads=<number of threads>                       (default=1)" + nl
@@ -309,6 +312,14 @@ public final class Parameters {
      */
     public float maxlr() {
         return maxlr;
+    }
+
+    /**
+     * Returns the outputsnps parameter.
+     * @return the outputsnps parameter.
+     */
+    public boolean outputsnps(){
+	return outputsnps;
     }
 
     // algorithm parameters
