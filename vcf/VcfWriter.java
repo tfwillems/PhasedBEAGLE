@@ -85,11 +85,11 @@ public final class VcfWriter {
      * @param vcfFile the file to which VCF output will be written.
      * @throws NullPointerException if {@code haps==null || vcfFile==null}.
      */
-    public static void write(String source, SampleHapPairs haps,
+    public static void write(String source, SampleHapPairs haps, boolean writeSNPs,
             File vcfFile) {
         try (PrintWriter out=FileUtil.bgzipPrintWriter(vcfFile)) {
             writeMetaLinesGT(haps.samples().ids(), source, out);
-            appendRecords(haps, 0, haps.nMarkers(), out);
+            appendRecords(haps, 0, haps.nMarkers(), writeSNPs, out);
         }
     }
 
@@ -220,6 +220,7 @@ public final class VcfWriter {
      * @param gv the scaled sample posterior genotype probabilities.
      * @param start the starting marker index (inclusive).
      * @param end the ending marker index (exclusive).
+     * @param writeSNPs output SNP records iff the flag is set
      * @param out the {@code PrintWriter} to which VCF records will
      * be written.
      *
@@ -231,7 +232,7 @@ public final class VcfWriter {
      * {@code haps==null || gv==null || out==null}.
      */
     public static void appendRecords(SampleHapPairs haps,
-            GenotypeValues gv, int start, int end, PrintWriter out) {
+				     GenotypeValues gv, int start, int end, boolean writeSNPs, PrintWriter out) {
         if (start > end) {
             throw new IllegalArgumentException("start=" + start + " end=" + end);
         }
@@ -240,6 +241,9 @@ public final class VcfWriter {
         }
         float[] sumAndAltDose = new float[2];
         for (int marker=start; marker<end; ++marker) {
+	    if (!writeSNPs && gv.marker(marker).is_snp())
+		continue;
+
             printFixedFields(gv, marker, out);
             for (int hp=0, n=haps.nSamples(); hp<n; ++hp) {
                 out.print(Const.tab);
@@ -289,6 +293,7 @@ public final class VcfWriter {
      * @param haps the sample haplotype pairs.
      * @param start the starting marker index (inclusive).
      * @param end the ending marker index (exclusive).
+     * @param writeSNPs output SNP records iff the flag is set
      * @param out the {@code PrintWriter} to which VCF records will
      * be written.
      *
@@ -298,11 +303,14 @@ public final class VcfWriter {
      * {@code haps==null || out==null}.
      */
     public static void appendRecords(SampleHapPairs haps,
-            int start, int end, PrintWriter out) {
+				     int start, int end, boolean writeSNPs, PrintWriter out) {
         if (start > end) {
             throw new IllegalArgumentException("start=" + start + " end=" + end);
         }
         for (int marker=start; marker<end; ++marker) {
+	    if (!writeSNPs && haps.marker(marker).is_snp())
+		continue;
+
             printFixedFieldsGT(haps.marker(marker), out);
             for (int hp=0, n=haps.nSamples(); hp<n; ++hp) {
                 out.print(Const.tab);
@@ -377,6 +385,13 @@ public final class VcfWriter {
             out.print( (j==1) ? ";AF=" : Const.comma);
             out.print(df3.format(alleleFreq[j]));
         }
+
+	// Print INFO fields if they were in the reference VCF
+	if (gv.marker(marker).start() != -1)
+	    out.print("START=" + gv.marker(marker).start() + ";");
+	if (gv.marker(marker).end() != -1)
+	    out.print("END=" + gv.marker(marker).end() + ";");
+
         out.print(Const.tab);
         out.print("GT:DS:GP:PGP");
     }

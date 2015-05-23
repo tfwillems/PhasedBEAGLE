@@ -141,6 +141,7 @@ public class WindowWriter {
      * window.
      * @param nextOverlap first index of overlap with the next marker window.
      * @param nextSplice first index after splice point for the next marker
+     * @param writeSNPs output SNP records iff flag is true
      * window.
      *
      * @throws IllegalStateException if {@code this.isClosed()==true}.
@@ -157,17 +158,17 @@ public class WindowWriter {
      */
     public void print(SampleHapPairs hapPairs,
             GenotypeValues gv, Map<IntPair, List<IbdSegment>> ibdMap,
-            int lastSplice, int nextOverlap, int nextSplice) {
+		      int lastSplice, int nextOverlap, int nextSplice, boolean writeSNPs) {
         if (isClosed) {
             throw new IllegalStateException("isClosed()==true");
         }
         checkData(hapPairs, gv, lastSplice, nextOverlap, nextSplice);
 
         if (gv==null) {
-            VcfWriter.appendRecords(hapPairs, lastSplice, nextSplice, vcfOut);
+            VcfWriter.appendRecords(hapPairs, lastSplice, nextSplice, writeSNPs, vcfOut);
         }
         else {
-            VcfWriter.appendRecords(hapPairs, gv, lastSplice, nextSplice, vcfOut);
+            VcfWriter.appendRecords(hapPairs, gv, lastSplice, nextSplice, writeSNPs, vcfOut);
         }
         vcfOut.flush();
 

@@ -149,7 +149,7 @@ public class Main {
             prevNonRefHaps = nonRefHaps;
             SampleHapPairs impHaps = mh.impute(data, nonRefHaps, gv);
             windowOut.print(impHaps, gv, ibd, lastSplice, nextOverlap,
-                    nextSplice);
+			    nextSplice, par.outputsnps());
         }
     }
 
