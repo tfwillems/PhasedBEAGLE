@@ -354,8 +354,8 @@ public class VcfRecord {
 
     /**
      * Returns the probability that the asserted presence or absence of
-     * alternate bases is incorrect.  If ALT is ”.” (no variant) then this is
-     * P(variant), and if ALT is not ”.” then this P(no variant).
+     * alternate bases is incorrect.  If ALT is "." (no variant) then this is
+     * P(variant), and if ALT is not "." then this P(no variant).
      *
      * @return the probability that the asserted presence or absence of
      * alternate bases is incorrect.
