@@ -89,7 +89,12 @@ public class VcfRefIterator implements SampleFileIterator<VcfEmission> {
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
-        return new BitSetRefGT(it.next());
+	VcfRecord nextRecord = it.next();
+	if (nextRecord.hasFormat("PGP")){
+	    return new PGPRefGT(nextRecord);
+	}
+	else
+	    return new BitSetRefGT(nextRecord);
     }
 
     /**
