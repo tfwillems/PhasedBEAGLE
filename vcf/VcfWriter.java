@@ -253,6 +253,7 @@ public final class VcfWriter {
 		continue;
 
             printFixedFields(gv, marker, out);
+	    int nAlleles = gv.marker(marker).nAlleles();
             for (int hp=0, n=haps.nSamples(); hp<n; ++hp) {
                 out.print(Const.tab);
                 out.print(haps.allele1(marker, hp));
@@ -284,10 +285,25 @@ public final class VcfWriter {
                         double v = gv.unphased_value(marker, sampleIndex, gt)/sum;
                         out.print(df3.format(v));
                     }
-		    for (int gt=0; gt<nPhasedGenotypes; ++gt) {
-			out.print(gt==0 ? Const.colon : Const.comma);
-			double v = gv.phased_value(marker, sampleIndex, gt)/sum;
-			out.print(df3.format(v));
+
+		    // The BEAGLE algorithm sometimes switches the two strands relative to the original input VCF
+		    // The PGP values are relative to the original input VCF orientation.
+		    // As a result, if the switching does occur, we need to reverse them, i.e. PGP[i,j] = PGP[j,i]
+		    Marker loc       = gv.marker(marker);
+		    int gt_index_a   = loc.phased_genotype(haps.allele1(marker, hp), haps.allele2(marker, hp));
+		    int gt_index_b   = loc.phased_genotype(haps.allele2(marker, hp), haps.allele1(marker, hp));
+		    boolean switched = (gv.phased_value(marker, sampleIndex, gt_index_a) < gv.phased_value(marker, sampleIndex, gt_index_b));
+
+		    if (gv.marker(marker).start() != -1){
+			for (byte a1=0; a1<nAlleles; ++a1){
+			    for (byte a2=0; a2<nAlleles; ++a2){
+				out.print((a1 == 0 && a2 == 0) ? Const.colon: Const.comma);
+				int gt = (switched ? loc.phased_genotype(a2, a1) : loc.phased_genotype(a1, a2));
+				double v = gv.phased_value(marker, sampleIndex, gt)/sum;
+				out.print(df3.format(v));
+			    }
+			}
+
 		    }
                 }
             }
@@ -401,6 +417,9 @@ public final class VcfWriter {
 	    out.print(";END=" + gv.marker(marker).end());
 
         out.print(Const.tab);
-        out.print("GT:DS:GP:PGP");
+	if (gv.marker(marker).start() != -1)
+	    out.print("GT:DS:GP:PGP");
+	else
+	    out.print("GT:DS:GP");
     }
 }
